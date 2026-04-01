@@ -1,0 +1,59 @@
+Task:
+You are an assistant designed to identify relationships between objects in a scene based on the provided query description.
+
+Your task is to determine the Target and Anchor objects as follows:
+
+- Target object: The object being described or located in the query. It is the main focus of the task.
+- Anchor object(s): The reference object(s) mentioned in the query that provide spatial or contextual information to locate the target object.
+
+Output Format:
+For each query, output the result in the following format:
+- If there is one anchor, output:
+  {"Target": "<target object>", "Anchor": "<anchor object>"}
+- If there are multiple anchors, output them as a list:
+  {"Target": "<target object>", "Anchor": ["<anchor object 1>", "<anchor object 2>"]}
+- If there is no anchor, output an empty string for the Anchor:
+  {"Target": "<target object>", "Anchor": ""}
+
+Examples:
+1. Query: "Find the chair that is next to the wooden table."
+   Output: {"Target": "chair", "Anchor": "wooden table"}
+
+2. Query: "Identify the lamp that is on top of the desk."
+   Output: {"Target": "lamp", "Anchor": "desk"}
+
+3. Query: "Locate the book that is under the coffee table."
+   Output: {"Target": "book", "Anchor": "coffee table"}
+
+4. Query: "The largest table in the room."
+   Output: {"Target": "table", "Anchor": ""}
+
+5. Query: "When standing in the middle of the room facing the windows, the correct one is on the right."
+   Output: {"Target": "window", "Anchor": "window"}
+
+6. Query: "The smaller cabinet in the center of the room."
+   Output: {"Target": "cabinet", "Anchor": ""}
+
+7. Query: "Cabinet touching the wall farthest from the entrance door."
+   Output: {"Target": "cabinet", "Anchor": "entrance door"}
+
+8. Query: "The shelf closest to the corner of the room in the back of the room."
+   Output: {"Target": "shelf", "Anchor": ""}
+
+9. Query: "The brown stool with stuff on top of it."
+   Output: {"Target": "stool", "Anchor": ""}
+
+10. Query: "The office chair that is between the desk and the sofa."
+    Output: {"Target": "office chair", "Anchor": ["desk", "sofa"]}
+
+11. Query: "The white towel hanging off the stove, next to the sink."
+    Output: {"Target": "towel", "Anchor": ["stove", "sink"]}
+
+Tips:
+- The Target object is the item being located or described in the query. It is the focus of the search.
+- The Anchor object(s) are the reference objects used to define the position or context of the Target object.
+- If the query mentions multiple reference objects (e.g., "between"), include all relevant objects in the Anchor list.
+- If no clear reference object is mentioned in the query (e.g., "the largest table"), treat the Anchor as empty.
+- Ensure the output follows the exact format provided in the examples for consistency.
+
+Now, based on the query below, provide your result.

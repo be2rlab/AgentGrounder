@@ -1,0 +1,12 @@
+user_prompt: >
+  I will provide you with a set of photos showing the same object from multiple angles within a room. Act as a spatial analysis expert and extract detailed identification clues based on the following structure to distinguish this specific object from other similar items in the space:
+
+  1. Geometric Features and Size: Based on the different views, describe its specific 3D shape (e.g., circular, rectangular, cylindrical). 
+  2. Color and Surface Details: Identify the exact color and any distinct surface features, such as patterns (e.g., 'striped pillow') or materials (e.g., 'grey fabric and wood', 'whiteboard with a wooden border').
+  3. State and Contents: What is the current state of the object (e.g., 'door is slightly open', 'computer is turned on')? Identify any items inside or on top of it (e.g., 'cabinet that contains the TV', 'table with shoes on the lower shelf and three papers on top').
+
+  The object has a width of {width:.2f} meters, a length of {length:.2f} meters, and a height of {height:.2f} meters. The object is likely to be a {hint_label}, but you need to recheck it using the visual image. 
+  
+  Please synthesize this information into a single identification string following this style: 'Object name Size/Color detail'. Example: 'The small white trash can'.
+
+  THE OUTPUT SHOULD BE A SINGLE SENTENCE!!!

@@ -1,0 +1,43 @@
+model:
+  api_key: "your_openai_api_key_here"
+  base_url: "http://192.168.1.5:11434,http://192.168.1.5:11435" # comma-separated model base URLs for load balancing across GPUs
+  name: "qwen3-vl:32b-instruct"
+  temperature: 0.8
+  num_ctx: 32768
+
+embedding_model:
+  name: "embeddinggemma:latest"
+
+prompts:
+  inference_prompt: !include inference_prompt.yaml
+  ov_caption_prompt: !include ov_caption_prompt.yaml
+
+rendering:
+  use_image: true
+
+segmentor3d:
+  rex_folder_path: "/home/docker_user/PCGrounder/weights/Rex-Omni"
+  sam3_bpe_path: "/home/docker_user/sam3/sam3/assets/bpe_simple_vocab_16e6.txt.gz"
+  sam3_weights_path: "/home/docker_user/PCGrounder/weights/sam3/sam3.pt"
+
+experiment:
+  dataset: "nr3d"
+  split: "test"
+
+  device: "cuda:0"
+  
+  output_dir: "/prediction_outputs/nr3d/agent-grounder/qwen3-vl-32b-instruct/validation_set_strats_nr3d_14query/test"
+  
+  data:
+    # anno_csv: "PCGrounder/data/nr3d/nr3d_test.csv"
+    language_annotation_dir: "/preprocessed_data/nr3d/query/validation_set_strats_nr3d_14query"
+    gt_bbox_dir: "/preprocessed_data/nr3d/object_lookup_table/gt"
+    pred_bbox_dir: "/preprocessed_data/nr3d/object_lookup_table/gt" # using gtbbox for testing
+    # pred_bbox_dir: "/preprocessed_data/nr3d/object_lookup_table/pred"
+    pcd_dir: "/remote-home/share/vg_datasets/referit3d/scan_data/pcd_with_global_alignment/"
+    val_file: "/home/docker_user/PCGrounder/data/scannet/scannetv2_val.txt"
+    open_vocab_captions_dir: "/preprocessed_data/nr3d/open_vocab_captions_data/open_vocab_captions_v2"
+    vectorstore_dir: "/preprocessed_data/nr3d/chromadb_data/mask3d_labels_pred"
+    multi_view_projection_dir: "/preprocessed_data/nr3d/multi_view_imgs_data/multi-view-projection-imgs_v3"
+
+

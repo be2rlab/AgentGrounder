@@ -1,0 +1,27 @@
+services:
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pc_grounder:base
+    # container_name: cuong_grounding_container
+    restart: unless-stopped
+    network_mode: host
+    ipc: host
+    environment:
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - DISPLAY=$DISPLAY
+      - VGL_DISPLAY=${RENDER_DISPLAY:-":1"}
+      - BASE_DIR=/home/docker_user/PCGrounder
+    volumes:
+      - /tmp/.X11-unix/:/tmp/.X11-unix
+      - $BASE_DIR/:/home/docker_user/PCGrounder:rw
+      - $DATA_DIR/scannet/scannetv2_val.txt:/data/scannetv2_val.txt:rw
+      - $DATA_DIR/referit3d:/remote-home/share/vg_datasets/referit3d:rw
+      - $OUTPUTS_DIR/:/prediction_outputs:rw
+      - $PREPROCESSED_DATA_DIR:/preprocessed_data:rw
+    runtime: nvidia
+    privileged: true
+    command: sleep infinity

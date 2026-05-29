@@ -1,0 +1,920 @@
+/*!
+  styles.css
+  ──────────────────────────────────────────────────────────────────────────────
+  Full stylesheet for the AgentGrounder project page.  Uses CSS custom
+  properties (variables) for every design token so the theme is trivial to
+  tweak.  Responsive down to ~360 px, respects prefers-reduced-motion.
+  ──────────────────────────────────────────────────────────────────────────────
+  Table of Contents
+    1.  Custom properties
+    2.  Reset & base
+    3.  Typography helpers
+    4.  Navigation
+    5.  Hero
+    6.  Sections
+    7.  Abstract
+    8.  Cards (method)
+    9.  Figures
+    10. Results grid
+    11. BibTeX block
+    12. Footer
+    13. Micro-interactions & motion
+    14. Responsive
+*/
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1.  Custom properties
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Colours ─────────────────────────────────────────────────────── */
+  --color-bg:           #ffffff;
+  --color-text:         #1a1a1a;
+  --color-text-soft:    #6b6b6b;
+  --color-text-muted:   #9a9a9a;
+  --color-accent:       #6b7280;         /* links, emphasis */
+  --color-accent-hover: #4b5563;
+  --color-border:       #e5e7eb;
+  --color-card-bg:      #f8f9fa;
+  --color-code-bg:      #f1f3f5;
+  --color-code-border:  #dee2e6;
+
+  /* ── Typography ──────────────────────────────────────────────────── */
+  --font-sans:  -apple-system, "SF Pro Display", "Inter", "Helvetica Neue",
+                "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono:  "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code",
+                "Menlo", Consolas, monospace;
+
+  /* ── Spacing scale ───────────────────────────────────────────────── */
+  --space-2:    0.125rem;
+  --space-4:    0.25rem;
+  --space-8:    0.5rem;
+  --space-12:   0.75rem;
+  --space-16:   1rem;
+  --space-20:   1.25rem;
+  --space-24:   1.5rem;
+  --space-32:   2rem;
+  --space-40:   2.5rem;
+  --space-48:   3rem;
+  --space-64:   4rem;
+  --space-80:   5rem;
+  --space-96:   6rem;
+
+  /* ── Radii ───────────────────────────────────────────────────────── */
+  --radius-sm:  8px;
+  --radius-md:  10px;
+  --radius-lg:  12px;
+
+  /* ── Elevation ───────────────────────────────────────────────────── */
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg:  0 8px 24px rgba(0,0,0,0.08);
+
+  /* ── Transitions ─────────────────────────────────────────────────── */
+  --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Layout ──────────────────────────────────────────────────────── */
+  --content-max:  1120px;
+  --content-narrow: 700px;
+}
+
+/* ── Dark theme ────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-bg:           #111827;
+  --color-text:         #e5e7eb;
+  --color-text-soft:    #9ca3af;
+  --color-text-muted:   #6b7280;
+  --color-accent:       #9ca3af;
+  --color-accent-hover: #cbd5e1;
+  --color-border:       #374151;
+  --color-card-bg:      #1f2937;
+  --color-code-bg:      #1f2937;
+  --color-code-border:  #374151;
+}
+
+[data-theme="dark"] .btn {
+  background: #1f2937;
+  border-color: #374151;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .btn:hover {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .btn--primary:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .nav {
+  background: rgba(17, 24, 39, 0.85);
+}
+
+[data-theme="dark"] .table__ours td {
+  background: rgba(156, 163, 175, 0.08);
+}
+
+[data-theme="dark"] .table tbody tr:hover {
+  background: rgba(156, 163, 175, 0.04);
+}
+
+[data-theme="dark"] .bibtex__copy--copied {
+  background: #374151;
+  border-color: #4b5563;
+  color: #9ca3af;
+}
+
+/* ── Theme toggle button ───────────────────────────────────────────── */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-8);
+  color: var(--color-text-soft);
+  transition: color var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle:hover {
+  color: var(--color-text);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2.  Reset & base
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.625;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Links ─────────────────────────────────────────────────────────── */
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* ── Focus ─────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ── Images ────────────────────────────────────────────────────────── */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3.  Typography helpers
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.accent {
+  color: var(--color-accent);
+}
+
+.section__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-24);
+  line-height: 1.2;
+}
+
+.section__lede {
+  font-size: 1.1rem;
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-40);
+  max-width: var(--content-narrow);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   4.  Navigation
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  transition: box-shadow var(--transition);
+}
+
+.nav--scrolled {
+  box-shadow: var(--shadow-sm);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-24);
+  height: 56px;
+}
+
+.nav__logo {
+  font-size: 0.925rem;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.nav__links {
+  display: flex;
+  gap: var(--space-24);
+  list-style: none;
+}
+
+.nav__link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-soft);
+  position: relative;
+  padding: var(--space-4) 0;
+  transition: color var(--transition);
+}
+
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition);
+}
+
+.nav__link:hover::after,
+.nav__link--active::after {
+  transform: scaleX(1);
+}
+
+.nav__link:hover {
+  color: var(--color-text);
+}
+
+.nav__link--active {
+  color: var(--color-text);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   5.  Hero
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.hero {
+  padding: 120px var(--space-24) var(--space-64);
+  text-align: center;
+}
+
+.hero__inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.hero__tagline {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-24);
+}
+
+.hero__title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  margin-bottom: var(--space-20);
+}
+
+.hero__subtitle {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--color-text-soft);
+}
+
+.hero__authors {
+  font-size: 1.05rem;
+  margin-top: var(--space-32);
+  margin-bottom: var(--space-8);
+}
+
+.hero__authors a {
+  font-weight: 500;
+}
+
+.hero__affiliation {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-24);
+}
+
+.hero__oneliner {
+  font-size: 1.1rem;
+  color: var(--color-text-soft);
+  max-width: 550px;
+  margin: 0 auto var(--space-32);
+  line-height: 1.5;
+}
+
+.hero__actions {
+  display: flex;
+  gap: var(--space-12);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+
+/* ── Buttons ───────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-12) var(--space-24);
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: var(--color-card-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition:
+    background var(--transition),
+    color var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #eef0f2;
+  border-color: #d0d3d8;
+}
+
+.btn--primary {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.btn--primary:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: #fff;
+}
+
+.btn--bib {
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-text-soft);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   6.  Sections
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.section {
+  padding: var(--space-80) var(--space-24);
+}
+
+.section:nth-child(even) {
+  background: var(--color-card-bg);
+}
+
+.section__inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.section__inner--narrow {
+  max-width: var(--content-narrow);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   7.  Abstract
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.abstract__text {
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-bottom: var(--space-20);
+  color: var(--color-text);
+}
+
+.abstract__text:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   8.  Cards (method)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-24);
+  margin-bottom: var(--space-48);
+}
+
+.card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-32);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+
+.card__step {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-8);
+}
+
+.card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-12);
+}
+
+.card__text {
+  font-size: 0.925rem;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+  margin-bottom: var(--space-16);
+}
+
+.card__list {
+  list-style: none;
+  font-size: 0.875rem;
+  color: var(--color-text-soft);
+}
+
+.card__list li {
+  position: relative;
+  padding-left: var(--space-16);
+  margin-bottom: var(--space-4);
+}
+
+.card__list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--color-text-muted);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   9.  Figures
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.figure {
+  margin: var(--space-48) 0;
+}
+
+.figure__frame {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-card-bg);
+  transition: transform var(--transition);
+}
+
+.figure__caption {
+  margin-top: var(--space-16);
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+  max-width: var(--content-narrow);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   10.  Results grid
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.results__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-24);
+  margin-bottom: var(--space-48);
+}
+
+.result-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-32);
+}
+
+.result-card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-20);
+}
+
+.result-card__venue {
+  font-weight: 400;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.result-card__metric {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-8);
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.result-card__metric:last-of-type {
+  border-bottom: none;
+}
+
+.result-card__value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  min-width: 80px;
+}
+
+.result-card__label {
+  font-size: 0.875rem;
+  color: var(--color-text-soft);
+}
+
+
+/* ── Tables (ScanRefer, Nr3D, Ablation) ────────────────────────────── */
+
+.table-wrap {
+  margin-bottom: var(--space-48);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-8);
+}
+
+.table__venue {
+  font-weight: 400;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.table__desc {
+  font-size: 0.875rem;
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-16);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  font-family: var(--font-sans);
+}
+
+.table th,
+.table td {
+  padding: var(--space-8) var(--space-12);
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.table th {
+  font-weight: 600;
+  background: var(--color-card-bg);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-soft);
+}
+
+.table th[rowspan] {
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background: rgba(107, 114, 128, 0.03);
+}
+
+.table tbody tr td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.table__subhead td {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  background: var(--color-card-bg);
+  text-align: left;
+  padding-top: var(--space-16);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.table__ours td {
+  background: rgba(107, 114, 128, 0.05);
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.table .yes {
+  color: #6b7280;
+}
+
+.table .no {
+  color: #dc2626;
+}
+
+.table--ablation {
+  font-size: 0.82rem;
+}
+
+.table--ablation th,
+.table--ablation td {
+  min-width: 60px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   11.  BibTeX block
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.bibtex__wrapper {
+  position: relative;
+}
+
+.bibtex__copy {
+  position: absolute;
+  top: var(--space-12);
+  right: var(--space-12);
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  color: var(--color-text-soft);
+  cursor: pointer;
+  transition:
+    background var(--transition),
+    color var(--transition),
+    border-color var(--transition);
+}
+
+.bibtex__copy:hover {
+  background: var(--color-border);
+  color: var(--color-text);
+}
+
+.bibtex__copy--copied {
+  background: #d1fae5;
+  border-color: #6ee7b7;
+  color: #065f46;
+}
+
+.bibtex__code {
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   12.  Footer
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.footer {
+  padding: var(--space-48) var(--space-24);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.footer__inner {
+  max-width: var(--content-narrow);
+  margin: 0 auto;
+}
+
+.footer__affiliation {
+  font-size: 0.875rem;
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-12);
+}
+
+.footer__links {
+  font-size: 0.85rem;
+  margin-bottom: var(--space-16);
+}
+
+.footer__copy {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   13.  Micro-interactions & motion
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Button hover ──────────────────────────────────────────────────── */
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(107, 114, 128, 0.25);
+}
+
+/* ── Card hover ────────────────────────────────────────────────────── */
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .figure__frame:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* ── Reduced motion ────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .btn:hover,
+  .card:hover,
+  .result-card:hover,
+  .figure__frame:hover {
+    transform: none !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   14.  Responsive
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Tablet & below ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px var(--space-20) var(--space-48);
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .results__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: var(--space-48) var(--space-20);
+  }
+}
+
+/* ── Mobile ────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .nav__links {
+    gap: var(--space-12);
+  }
+
+  .nav__link {
+    font-size: 0.78rem;
+  }
+
+  .hero {
+    padding: 90px var(--space-16) var(--space-32);
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+
+  .card {
+    padding: var(--space-24);
+  }
+
+  .result-card {
+    padding: var(--space-24);
+  }
+
+  .bibtex__code {
+    font-size: 0.75rem;
+    padding: var(--space-16);
+  }
+
+  .section__title {
+    font-size: 1.4rem;
+  }
+}
+
+/* ── Very narrow (360px) ──────────────────────────────────────────────── */
+@media (max-width: 400px) {
+  .nav__logo {
+    font-size: 0.8rem;
+  }
+
+  .nav__links {
+    gap: var(--space-8);
+  }
+
+  .nav__link {
+    font-size: 0.7rem;
+  }
+
+  .hero__title {
+    font-size: 1.6rem;
+  }
+}

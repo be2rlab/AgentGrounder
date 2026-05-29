@@ -1,0 +1,335 @@
+<!---
+  index.html
+  ───────────────────────────────────────────────────
+  Academic project page for "AgentGrounder: Zero-Shot 3D Visual
+  Pointcloud Grounding using Multimodal Language Models".
+
+  Semantic HTML only — all styling lives in styles.css and
+  all interactivity lives in script.js.
+--->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentGrounder — Zero-Shot 3D Visual Grounding</title>
+  <meta name="description" content="AgentGrounder: Zero-shot 3D visual grounding on colored point clouds using multimodal language models — no task-specific 3D training required." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ── Sticky Navigation ──────────────────────────────────────────── -->
+  <nav class="nav" id="navbar" aria-label="Page sections">
+    <div class="nav__inner">
+      <span class="nav__logo"><strong>AgentGrounder</strong></span>
+      <ul class="nav__links">
+        <li><a href="#abstract"    class="nav__link">Abstract</a></li>
+        <li><a href="#method"      class="nav__link">Method</a></li>
+        <li><a href="#results"     class="nav__link">Results</a></li>
+        <li><a href="#bibtex"      class="nav__link">BibTeX</a></li>
+        <li><a href="#footer"      class="nav__link">Code</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path class="theme-toggle__sun" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero__inner">
+      <p class="hero__tagline">ICRA 2026 MM-Spatial & SRRA Workshops</p>
+      <h1 class="hero__title">
+        AgentGrounder<br />
+        <span class="hero__subtitle">Zero-Shot 3D Visual Pointcloud Grounding<br />
+        using Multimodal Language Models</span>
+      </h1>
+
+      <p class="hero__authors">
+        <a href="#">Cuong Huynh</a>&ensp;
+        <a href="#">Maxim Popov</a>&ensp;
+        <a href="#">Denis Gridusov</a>&ensp;
+        <a href="#">Sergey Kolyubin</a>
+      </p>
+      <p class="hero__affiliation">
+        Biomechatronics and Energy-Efficient Robotics (BE2R) Lab, ITMO University, Russia
+      </p>
+
+      <p class="hero__oneliner">
+        Zero-shot 3D visual grounding on colored point clouds —<br />
+        no task-specific 3D training required.
+      </p>
+
+      <div class="hero__actions">
+        <a href="https://arxiv.org/abs/2605.25901" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Paper (arXiv)
+        </a>
+        <a href="https://github.com/be2rlab/AgentGrounder" class="btn" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          Code (GitHub)
+        </a>
+        <a href="#bibtex" class="btn btn--bib">BibTeX</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Abstract ──────────────────────────────────────────────────── -->
+  <section class="section" id="abstract">
+    <div class="section__inner section__inner--narrow">
+      <h2 class="section__title">Abstract</h2>
+      <p class="abstract__text">
+        3D Visual Grounding (3DVG) is an essential capability for embodied AI, requiring agents to localize objects in 3D scenes based on natural language descriptions. Recent zero-shot methods leverage 2D vision-language models (LVLMs). However, they often rely on existing sets of multi-view images and struggle with the limited semantic and spatial details provided by standard 3D segmentation tools.
+      </p>
+      <p class="abstract__text">
+        We present <strong class="accent">AgentGrounder</strong>, a zero-shot 3D visual grounding framework that operates directly on colored point clouds without task-specific 3D training. Our approach follows a two-stage design: (1) an offline stage that applies a 3D model to build an Object Lookup Table (OLT) with instance IDs, semantic labels, and 3D bounding boxes; and (2) an online tool-driven agent that decomposes each query, retrieves only relevant candidates from the OLT, performs geometric scoring, and triggers image rendering on demand when additional visual evidence (e.g., color, material, or viewpoint-sensitive cues) is required.
+      </p>
+      <p class="abstract__text">
+        Compared with fixed anchor-target matching pipelines, this design reduces cascading matching errors and improves context-window efficiency by avoiding prompts overloaded with irrelevant objects. We evaluate on <strong>ScanRefer</strong> and <strong>Nr3D</strong> under a zero-shot setting and observe consistent improvements over SeeGround in our setup, including <strong>+2.5% Acc@0.5 on ScanRefer</strong> and <strong>+6.3% on Nr3D</strong>, with a notable <strong>+6.3% gain on Nr3D view-independent queries</strong>. These results show that combining selective retrieval, geometric reasoning, and adaptive visual inspection yields a practical and robust foundation for open-vocabulary 3D grounding.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Method ─────────────────────────────────────────────────────── -->
+  <section class="section" id="method">
+    <div class="section__inner">
+      <h2 class="section__title">Method Overview</h2>
+      <p class="section__lede">
+        <strong class="accent">AgentGrounder</strong> follows a two-stage design that separates offline scene
+        understanding from online query-driven reasoning.
+      </p>
+
+      <div class="cards">
+        <!-- Stage 1 -->
+        <article class="card">
+          <span class="card__step">Stage 1</span>
+          <h3 class="card__title">Offline</h3>
+          <p class="card__text">
+            A 3D instance segmentation network (Mask3D) processes the colored
+            point cloud once per scene. Each detected instance is stored in an
+            <strong>Object Lookup Table (OLT)</strong> with its unique ID, semantic
+            label, 3D center coordinates, and bounding-box dimensions.
+          </p>
+          <ul class="card__list">
+            <li>Instance-level masks &amp; semantics</li>
+            <li>3D bounding boxes per object</li>
+            <li>Executed <em>once</em> per scene</li>
+          </ul>
+        </article>
+
+        <!-- Stage 2 -->
+        <article class="card">
+          <span class="card__step">Stage 2</span>
+          <h3 class="card__title">Online</h3>
+          <p class="card__text">
+            A vision-language model (Qwen3-VL-32B) acts as an agent that
+            decomposes the language query, retrieves only the relevant
+            candidates from the OLT, and applies deterministic geometric
+            scoring to rank them.
+          </p>
+          <ul class="card__list">
+            <li>Query decomposition &amp; planning</li>
+            <li>Label-based candidate retrieval</li>
+            <li>Geometric scoring (distance, direction, size)</li>
+            <li>On-demand rendering for visual disambiguation</li>
+          </ul>
+        </article>
+      </div>
+
+      <!-- Pipeline figure -->
+      <figure class="figure">
+        <div class="figure__frame">
+          <img
+            src="assets/figures/pipeline.jpg"
+            alt="AgentGrounder pipeline: offline 3D segmentation builds an Object Lookup Table; online agent retrieves candidates, scores them geometrically, and optionally renders images for view-dependent disambiguation."
+            loading="lazy"
+          />
+        </div>
+        <figcaption class="figure__caption">
+          <strong>Overview of the AgentGrounder agent pipeline.</strong>
+          For each query, the agent first writes an explicit plan, retrieves
+          candidate objects by semantic labels from scene metadata, and
+          computes geometric relations (e.g., nearest/farthest, left/right,
+          below) from 3D centers and box sizes. For view-dependent
+          expressions, the agent calls a rendering tool to inspect selected
+          object IDs and resolve ambiguity. Finally, it returns a structured
+          answer containing the predicted object ID and a textual
+          justification.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── Results ────────────────────────────────────────────────────── -->
+  <section class="section" id="results">
+    <div class="section__inner">
+      <h2 class="section__title">Results</h2>
+      <p class="section__lede">
+        <strong class="accent">AgentGrounder</strong> consistently outperforms
+        SeeGround across both benchmarks in our zero-shot setting.
+      </p>
+
+      <!-- ── ScanRefer table ────────────────────────────── -->
+      <div class="table-wrap">
+        <h3 class="table__title">ScanRefer <span class="table__venue">(validation)</span></h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th rowspan="2">Method</th>
+              <th rowspan="2">Venue</th>
+              <th rowspan="2">Zero-Shot</th>
+              <th rowspan="2">Agent</th>
+              <th colspan="2">Unique</th>
+              <th colspan="2">Multiple</th>
+              <th colspan="2">Overall</th>
+            </tr>
+            <tr>
+              <th>Acc@0.25</th>
+              <th>Acc@0.5</th>
+              <th>Acc@0.25</th>
+              <th>Acc@0.5</th>
+              <th>Acc@0.25</th>
+              <th>Acc@0.5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table__subhead"><td colspan="10">Fully supervised</td></tr>
+            <tr><td>G3-LQ</td><td>CVPR'24</td><td class="no"><span aria-label="No">&cross;</span></td><td>&mdash;</td><td>88.6</td><td>73.3</td><td>50.2</td><td>39.7</td><td>56.0</td><td>44.7</td></tr>
+            <tr><td>MCLN</td><td>ECCV'24</td><td class="no"><span aria-label="No">&cross;</span></td><td>&mdash;</td><td>86.9</td><td>72.7</td><td>52.0</td><td>40.8</td><td>57.2</td><td>45.7</td></tr>
+            <tr><td>ConcreteNet</td><td>ECCV'24</td><td class="no"><span aria-label="No">&cross;</span></td><td>&mdash;</td><td>86.4</td><td>82.1</td><td>42.4</td><td>38.4</td><td>50.6</td><td>46.5</td></tr>
+            <tr><td>Chat-Scene</td><td>NeurIPS'24</td><td class="no"><span aria-label="No">&cross;</span></td><td>Vicuna-7B</td><td>89.6</td><td>82.5</td><td>47.8</td><td>42.9</td><td>55.5</td><td>50.2</td></tr>
+            <tr><td>Video-3D LLM</td><td>CVPR'25</td><td class="no"><span aria-label="No">&cross;</span></td><td>LLaVA-Video 7B</td><td>88.0</td><td>78.3</td><td>50.9</td><td>45.3</td><td>58.1</td><td>51.7</td></tr>
+            <tr><td>GPT4Scene</td><td>ICLR'26</td><td class="no"><span aria-label="No">&cross;</span></td><td>Qwen2-VL-7B</td><td>90.3</td><td>83.7</td><td>56.4</td><td>50.9</td><td>62.6</td><td>57.0</td></tr>
+            <tr class="table__subhead"><td colspan="10">Zero-shot</td></tr>
+            <tr><td>LLM-G</td><td>ICRA'24</td><td class="yes"><span aria-label="Yes">&check;</span></td><td>GPT-3.5</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>14.3</td><td>4.7</td></tr>
+            <tr><td>LLM-G</td><td>ICRA'24</td><td class="yes"><span aria-label="Yes">&check;</span></td><td>GPT-4 turbo</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>17.1</td><td>5.3</td></tr>
+            <tr><td>ZSVG3D</td><td>CVPR'24</td><td class="yes"><span aria-label="Yes">&check;</span></td><td>GPT-4 turbo</td><td>63.8</td><td>58.4</td><td>27.7</td><td>24.6</td><td>36.4</td><td>32.7</td></tr>
+            <tr><td>SeeGround</td><td>CVPR'25</td><td class="yes"><span aria-label="Yes">&check;</span></td><td>Qwen2-VL-72B</td><td>75.7</td><td>68.9</td><td>34.0</td><td>30.0</td><td>44.1</td><td>39.4</td></tr>
+            <tr><td>CSVG</td><td>BMVC'25</td><td class="yes"><span aria-label="Yes">&check;</span></td><td>Mistral-Large-240B</td><td>68.8</td><td>61.1</td><td><b>38.4</b></td><td>27.3</td><td>49.6</td><td>39.8</td></tr>
+            <tr class="table__ours"><td><b>AgentGrounder (Ours)</b></td><td>&mdash;</td><td class="yes"><span aria-label="Yes">&check;</span></td><td>Qwen3-VL-32B</td><td><b>80.3</b></td><td><b>73.7</b></td><td>36.6</td><td><b>31.7</b></td><td>47.2</td><td><b>41.9</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Nr3D table ────────────────────────────────── -->
+      <div class="table-wrap">
+        <h3 class="table__title">Nr3D <span class="table__venue">(validation)</span></h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Easy</th>
+              <th>Hard</th>
+              <th>View Dep.</th>
+              <th>View Indep.</th>
+              <th>Overall</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table__subhead"><td colspan="6">Fully supervised</td></tr>
+            <tr><td>MiKASA</td><td>69.7</td><td>59.4</td><td>65.4</td><td>64.0</td><td>64.4</td></tr>
+            <tr><td>ViL3DRel</td><td>70.2</td><td>57.4</td><td>62.0</td><td>64.5</td><td>64.4</td></tr>
+            <tr><td>SceneVerse</td><td>72.5</td><td>57.8</td><td>56.9</td><td>67.9</td><td>64.9</td></tr>
+            <tr class="table__subhead"><td colspan="6">Zero-shot</td></tr>
+            <tr><td>ZSVG3D</td><td>46.5</td><td>31.7</td><td>36.8</td><td>40.0</td><td>39.0</td></tr>
+            <tr><td>VLM-Grounder</td><td>55.2</td><td>39.5</td><td>45.8</td><td>49.4</td><td>48.0</td></tr>
+            <tr><td>SeeGround</td><td>54.5</td><td>38.3</td><td>42.3</td><td>48.2</td><td>46.1</td></tr>
+            <tr class="table__ours"><td><b>AgentGrounder (Ours)</b></td><td><b>59.6</b></td><td><b>45.4</b></td><td><b>47.9</b></td><td><b>54.5</b></td><td><b>52.4</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Ablation table ─────────────────────────────── -->
+      <div class="table-wrap">
+        <h3 class="table__title">Ablation Study</h3>
+        <p class="table__desc">Ablation of agent tools on a held-out Nr3D subset (<i>N</i> = 120), measured by Acc@0.5.</p>
+        <table class="table table--ablation">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Retrieval</th>
+              <th>Distance</th>
+              <th>Planning</th>
+              <th>Rendering</th>
+              <th>Easy</th>
+              <th>Hard</th>
+              <th>Dep.</th>
+              <th>Indep.</th>
+              <th>Overall</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="no"><span aria-label="Disabled">&cross;</span></td><td class="no"><span aria-label="Disabled">&cross;</span></td><td class="no"><span aria-label="Disabled">&cross;</span></td><td>51.7</td><td>29.0</td><td>35.7</td><td>42.3</td><td>40.0</td></tr>
+            <tr><td>2</td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="no"><span aria-label="Disabled">&cross;</span></td><td class="no"><span aria-label="Disabled">&cross;</span></td><td>50.0</td><td><b>40.3</b></td><td>35.7</td><td>50.0</td><td>45.0</td></tr>
+            <tr><td>3</td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="no"><span aria-label="Disabled">&cross;</span></td><td>58.6</td><td>35.5</td><td>38.1</td><td><b>51.3</b></td><td>46.7</td></tr>
+            <tr><td>4</td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="no"><span aria-label="Disabled">&cross;</span></td><td class="yes"><span aria-label="Enabled">&check;</span></td><td>62.1</td><td>33.9</td><td><b>50.0</b></td><td>46.2</td><td>47.5</td></tr>
+            <tr class="table__ours"><td><b>5</b></td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="yes"><span aria-label="Enabled">&check;</span></td><td class="yes"><span aria-label="Enabled">&check;</span></td><td><b>65.5</b></td><td>35.5</td><td>47.6</td><td><b>51.3</b></td><td><b>50.0</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Qualitative results -->
+      <figure class="figure">
+        <div class="figure__frame">
+          <img
+            src="assets/figures/results_comparison.jpg"
+            alt="Qualitative comparison between SeeGround and AgentGrounder on example 3D scenes."
+            loading="lazy"
+          />
+        </div>
+        <figcaption class="figure__caption">
+          <strong>Qualitative comparison.</strong>
+          Example predictions from SeeGround (left) and
+          <strong class="accent">AgentGrounder</strong> (right) on ScanRefer
+          and Nr3D scenes. Our method produces tighter bounding boxes and
+          fewer false positives in cluttered scenes.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── BibTeX ─────────────────────────────────────────────────────── -->
+  <section class="section" id="bibtex">
+    <div class="section__inner section__inner--narrow">
+      <h2 class="section__title">BibTeX</h2>
+      <div class="bibtex__wrapper">
+        <button class="bibtex__copy" id="bibtexCopyBtn" aria-label="Copy BibTeX to clipboard">Copy</button>
+        <pre class="bibtex__code"><code id="bibtexCode">@article{huynh2026agentgrounder,
+  title={AgentGrounder: Zero-Shot 3D Visual Pointcloud Grounding using Multimodal Language Models},
+  author={Huynh, Cuong and Popov, Maxim and Gridusov, Denis and Kolyubin, Sergey},
+  journal={arXiv preprint arXiv:2605.25901},
+  year={2026}
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────── -->
+  <footer class="footer" id="footer">
+    <div class="footer__inner">
+      <p class="footer__affiliation">
+        Biomechatronics and Energy-Efficient Robotics (BE2R) Lab &middot;
+        ITMO University &middot; Saint Petersburg, Russia
+      </p>
+      <p class="footer__links">
+        <a href="https://arxiv.org/abs/2605.25901" target="_blank" rel="noopener noreferrer">Paper</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://github.com/be2rlab/AgentGrounder" target="_blank" rel="noopener noreferrer">Code</a>
+        &nbsp;&middot;&nbsp;
+        <a href="#bibtex">BibTeX</a>
+      </p>
+      <p class="footer__copy">
+        &copy; 2026 BE2R Lab.
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

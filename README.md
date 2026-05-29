@@ -1,6 +1,26 @@
-<p align="center">  
-  <h1 align="center">Agent-Grounder: Zero-Shot 3D Visual Pointcloud Grounding</h1>
+<p align="center">
+  <h1 align="center">AgentGrounder: Zero-Shot 3D Visual Pointcloud Grounding using Multimodal Language Models</h1>
+  <p align="center">
+    <a href="https://huynhtancuong.github.io/about/"><strong>Cuong Huynh</strong></a>
+    ·
+    <a href="https://warmhammer.github.io/"><strong>Maxim Popov</strong></a>
+    ·
+    <a href="https://github.com/D2J3D/"><strong>Denis Gridusov</strong></a>
+    .
+    <a href="https://en.itmo.ru/en/viewperson/464/Sergey_Kolyubin.htm/"><strong>Sergey Kolyubin</strong></a>
+  </p>
+  <h2 align="center">ICRA 2026 MM-Spatial & SRRA Workshops</h2>
+  <h3 align="center"><a href="https://arxiv.org/pdf/2605.25901">Paper</a> | <a href="https://arxiv.org/abs/2605.25901">ArXiv</a> |<a href="https://be2rlab.github.io/AgentGrounder/">Project Page</a></h3>
+  <div align="center"></div>
 </p>
+<p align="center">
+  <a href="">
+    <img src="https://be2rlab.github.io/AgentGrounder/figures/pipeline.jpg" alt="Pipeline" width="100%">
+  </a>
+</p>
+<p align="center">
+</p>
+<br>
 
 # Table of Content
 - [0. Environment Setup](#0-environment-setup)
